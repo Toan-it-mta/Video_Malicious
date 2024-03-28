@@ -15,4 +15,9 @@ Code đã được viết theo định dạng của: [URL_Phising](https://githu
 
 ### Chuẩn bị dữ liệu
 
-* Dữ liệu huấn luyện được lưu dưới dạng file csv gồm 2 cột ['text', 'label'] với ý nghĩa {0: "normal", 1: "malicious"} như trong thư mục **datasets**
+* Dữ liệu huấn luyện được tổ chức như sau:
+    * Folder "**audios**": chứa các file audio của bộ dữ liệu được lưu dưới dạng file "**\*.mp3**"
+    * 2 File "**train.csv**", "**test.csv**": được bao gồm các thông tin "**path**": đường dẫn tới file audio trong tập huấn luyện, "**label**": nhãn của audio đấy
+    
+![alt text](image.png)
+
