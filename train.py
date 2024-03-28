@@ -18,6 +18,7 @@ async def train(labId:str = "video_malicious_detection", model_name:str = 'googl
     """
     model_asr = Model_ASR()
     processing_dataset(path_train_data, model_asr)
+    del model_asr	
     train_dataset, valid_dataset = load_train_valid_dataset(path_train_data, val_size)
     model_text_classification = Model_Text_Classification(labId=labId, model_name=model_name, train_dataset=train_dataset, valid_dataset=valid_dataset)
     train_output = model_text_classification.train(learning_rate=learning_rate,EPOCHS=epochs, BS=batch_size)
