@@ -1,11 +1,11 @@
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer, AutoTokenizer, DataCollatorWithPadding, TrainerCallback
 import pandas as pd
 from datasets import Dataset
-from utils import compute_metrics, preprocessing_text
+from utils import compute_metrics, preprocessing_text, processing_dataset
 import os
+from model_asr import Model_ASR
 
-
-async def test(test_data_dir:str = './datasets/test.csv', labId:str = "malicious_detection", ckpt_number:int = 1, model_name:str = "google-bert/bert-base-multilingual-uncased", sample_model_dir:str = ''):
+async def test(path_test_data:str = './datasets/test.csv', labId:str = "malicious_detection", ckpt_number:int = 1, model_name:str = "google-bert/bert-base-multilingual-uncased", sample_model_dir:str = ''):
     """
     Thực hiện Test mô hình
     Parameters
@@ -16,12 +16,13 @@ async def test(test_data_dir:str = './datasets/test.csv', labId:str = "malicious
     model_name : str, require, default: 'google-bert/bert-base-multilingual-uncased' , Tên của mô hình cần Fine-tune có thể sử dụng các mô hình có sẵn trên Hugging face khác như: vinai/phobert-base, FacebookAI/xlm-roberta-base, ...
     sample_model_dir : str, require, default: '' , Đường dẫn tới check-point thực hiện Infer
     """
-    
+    model_asr = Model_ASR()
+    processing_dataset(path_test_data, model_asr)
     # Load test dataset
-    df = pd.read_csv(test_data_dir)
+    df = pd.read_csv(path_test_data)
     df = df[df['text'].notna()]
     df['text'] = df['text'].apply(preprocessing_text)
-    # del df['dataset']
+    del df['path']
     test_dataset = Dataset.from_pandas(df)
 
     #Load Model

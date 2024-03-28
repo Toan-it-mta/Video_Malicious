@@ -1,27 +1,10 @@
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer, AutoTokenizer, DataCollatorWithPadding, TrainerCallback
 import pandas as pd
 from datasets import Dataset
-from utils import compute_metrics, preprocessing_text
+from utils import compute_metrics, preprocessing_text, load_train_valid_dataset
 from copy import deepcopy
 
-def load_train_valid_dataset(train_data_dir:str, val_size:float):
-    """
-    Load bộ dữ liệu và chia train/valid
-    Parameters
-    ----------
-    train_data_dir : str , Đường dẫn tới file train.csv
-    val_size : float , Tỷ lệ của tập Valid
 
-    """
-    df = pd.read_csv(train_data_dir)
-    df = df[df['text'].notna()]
-    df_valid = df.sample(frac=val_size)
-    df_valid['text'] = df_valid['text'].apply(preprocessing_text)
-    df_train = df.drop(df_valid.index)
-    df_train['text'] = df_train['text'].apply(preprocessing_text)
-    train_dataset = Dataset.from_pandas(df_train)
-    valid_dataset = Dataset.from_pandas(df_valid)
-    return train_dataset, valid_dataset
 
 class CustomCallback(TrainerCallback):
     def __init__(self, trainer) -> None:
@@ -37,8 +20,8 @@ class CustomCallback(TrainerCallback):
             self._trainer.evaluate(eval_dataset=self._trainer.train_dataset, metric_key_prefix="train")
             return control_copy
     
-class Model_Malicious_Detection:
-    def __init__(self, labId:str = "malicious_detection", model_name:str = 'google-bert/bert-base-multilingual-uncased', train_data_dir:str = "./datasets/train.csv", val_size:float = 0.1):
+class Model_Text_Classification:
+    def __init__(self, train_dataset:Dataset, valid_dataset: Dataset, labId:str = "malicious_detection", model_name:str = 'google-bert/bert-base-multilingual-uncased'):
         """
         Parameters
         ----------
@@ -57,7 +40,7 @@ class Model_Malicious_Detection:
             model_name, num_labels=2, id2label=self.id2label, label2id=self.label2id
         )
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.train_dataset, self.valid_dataset = load_train_valid_dataset(train_data_dir,val_size)
+        self.train_dataset, self.valid_dataset = train_dataset, valid_dataset
         self.data_collator = DataCollatorWithPadding(tokenizer=self.tokenizer)
 
     

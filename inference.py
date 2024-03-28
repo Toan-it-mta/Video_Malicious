@@ -2,6 +2,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from transformers import pipeline
 import os
 from utils import preprocessing_text
+from model_asr import Model_ASR
 
 async def infer(text:str = '',labId:str = "malicious_detection", ckpt_number:int = 1, model_name:str = "google-bert/bert-base-multilingual-uncased", sample_model_dir:str = ''):
     """

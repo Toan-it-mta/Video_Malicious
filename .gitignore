@@ -1,0 +1,4 @@
+__pycache__
+modelDir/malicious_detection/*
+modelDir/asr_models/PhoWhisper-medium
+modelDir/asr_models/PhoWhisper-tiny
