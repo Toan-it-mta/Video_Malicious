@@ -2,12 +2,12 @@ from model_text_classification import Model_Text_Classification
 from model_asr import Model_ASR
 from utils import processing_dataset, load_train_valid_dataset
 
-def train(labId:str = "malicious_detection", model_name:str = 'FacebookAI/xlm-roberta-base', path_train_data:str = "./datasets/train.csv", val_size:float = 0.1,
+async def train(labId:str = "video_malicious_detection", model_name:str = 'google-bert/bert-base-multilingual-uncased', path_train_data:str = "./datasets/train.csv", val_size:float = 0.1,
                 learning_rate:float = 2e-4, epochs:int = 3, batch_size:int = 16):
     """
     Parameters
     ----------
-    labId : str, require, default: 'malicious_detection' , Nhãn của bài Lab
+    labId : str, require, default: 'video_malicious_detection' , Nhãn của bài Lab
     model_name : str, require, default: 'google-bert/bert-base-multilingual-uncased' , Tên của mô hình cần Fine-tune có thể sử dụng các mô hình có sẵn trên Hugging face khác như: vinai/phobert-base, FacebookAI/xlm-roberta-base, ...
     train_data_dir : str, require, default: './datasets/train.csv' , Đường dẫn tới file Train.csv
     val_size : float, require, default: 0.1 , Tỷ lệ tập Valid
@@ -24,7 +24,7 @@ def train(labId:str = "malicious_detection", model_name:str = 'FacebookAI/xlm-ro
     for res_per_epoch in train_output:
 	    yield res_per_epoch
     
-if __name__ == '__main__':
-    respones = train(model_name="FacebookAI/xlm-roberta-base", epochs=10)
-    for res in respones:
-        print(res)
+# if __name__ == '__main__':
+#     respones = train(model_name="FacebookAI/xlm-roberta-base", epochs=10)
+#     for res in respones:
+#         print(res)

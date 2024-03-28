@@ -76,18 +76,18 @@ def load_train_valid_dataset(path_train_data:str, val_size:float):
     valid_dataset = Dataset.from_pandas(df_valid)
     return train_dataset, valid_dataset
 
-def convert_mp4_to_mp3(path_folder_mp4:str, path_folder_mp3:str):
-    for file in os.listdir(path_folder_mp4):
-                try : 
-                    if re.search('mp4', file):
-                        mp4_path = os.path.join(path_folder_mp4,file)
-                        mp3_path = os.path.join(path_folder_mp3,os.path.splitext(file)[0]+'.mp3')
-                        new_file = mp.AudioFileClip(mp4_path)
-                        new_file.write_audiofile(mp3_path)
-                except:
-                    continue
+# def convert_mp4_to_mp3(path_folder_mp4:str, path_folder_mp3:str):
+#     for file in os.listdir(path_folder_mp4):
+#                 try : 
+#                     if re.search('mp4', file):
+#                         mp4_path = os.path.join(path_folder_mp4,file)
+#                         mp3_path = os.path.join(path_folder_mp3,os.path.splitext(file)[0]+'.mp3')
+#                         new_file = mp.AudioFileClip(mp4_path)
+#                         new_file.write_audiofile(mp3_path)
+#                 except:
+#                     continue
                 
-def get_text_from_file_mp4(path_file_mp4:str, model_asr: Model_ASR):
+def get_text_from_file_mp3(path_file_mp4:str, model_asr: Model_ASR):
     # path_file_mp3 = os.path.splitext(path_file_mp4)[0]+'.mp3'
     # file_mp3 = mp.AudioFileClip(path_file_mp4)
     # file_mp3.write_audiofile(path_file_mp3)
@@ -97,7 +97,7 @@ def get_text_from_file_mp4(path_file_mp4:str, model_asr: Model_ASR):
 
 def processing_dataset(path_dataset_csv:str, model_asr: Model_ASR):
     df = pd.read_csv(path_dataset_csv)
-    df['text'] = df['path'].apply(lambda x: get_text_from_file_mp4(x, model_asr))
+    df['text'] = df['path'].apply(lambda x: get_text_from_file_mp3(x, model_asr))
     df.to_csv(path_dataset_csv, index=False)
 
     

@@ -5,13 +5,13 @@ from utils import compute_metrics, preprocessing_text, processing_dataset
 import os
 from model_asr import Model_ASR
 
-async def test(path_test_data:str = './datasets/test.csv', labId:str = "malicious_detection", ckpt_number:int = 1, model_name:str = "google-bert/bert-base-multilingual-uncased", sample_model_dir:str = ''):
+async def test(path_test_data:str = './datasets/test.csv', labId:str = "video_malicious_detection", ckpt_number:int = 1, model_name:str = "google-bert/bert-base-multilingual-uncased", sample_model_dir:str = ''):
     """
     Thực hiện Test mô hình
     Parameters
     ----------
     test_data_dir : str, optional, default: './datasets/test.csv' , Đường dẫn tới file chứa tập test (test.csv)
-    labId : str, optional, default: 'malicious_detection' , Id của bài Lab
+    labId : str, optional, default: 'video_malicious_detection' , Id của bài Lab
     ckpt_number : int, optional, default: 1 , Số hiệu của check point
     model_name : str, require, default: 'google-bert/bert-base-multilingual-uncased' , Tên của mô hình cần Fine-tune có thể sử dụng các mô hình có sẵn trên Hugging face khác như: vinai/phobert-base, FacebookAI/xlm-roberta-base, ...
     sample_model_dir : str, require, default: '' , Đường dẫn tới check-point thực hiện Infer
