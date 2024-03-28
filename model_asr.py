@@ -2,7 +2,7 @@ from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 import torch
 from operator import itemgetter
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
+device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 class Model_ASR:
     def __init__(self, model_name='./modelDir/asr_models/PhoWhisper-medium') -> None:
