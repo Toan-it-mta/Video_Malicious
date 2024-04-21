@@ -2,7 +2,7 @@ torch
 transformers
 transformers[torch]
 datasets
-# pandas==2.0.2
+pandas
 scikit-learn
 librosa
 numpy
