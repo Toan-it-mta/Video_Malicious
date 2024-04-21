@@ -3,6 +3,7 @@ from transformers import pipeline
 import os
 from model_asr import Model_ASR
 from model_asr import Model_ASR
+from utils import preprocessing_text
 
 async def infer(path_audio:str = '',labId:str = "video_malicious_detection", ckpt_number:int = 1, model_name:str = "google-bert/bert-base-multilingual-uncased", sample_model_dir:str = ''):
     """

@@ -3,7 +3,6 @@ import pandas as pd
 from datasets import Dataset
 from utils import compute_metrics, preprocessing_text, processing_dataset
 import os
-from model_asr import Model_ASR
 
 async def test(path_test_data:str = './datasets/test.csv', labId:str = "video_malicious_detection", ckpt_number:int = 1, model_name:str = "google-bert/bert-base-multilingual-uncased", sample_model_dir:str = ''):
     """
@@ -16,8 +15,7 @@ async def test(path_test_data:str = './datasets/test.csv', labId:str = "video_ma
     model_name : str, require, default: 'google-bert/bert-base-multilingual-uncased' , Tên của mô hình cần Fine-tune có thể sử dụng các mô hình có sẵn trên Hugging face khác như: vinai/phobert-base, FacebookAI/xlm-roberta-base, ...
     sample_model_dir : str, require, default: '' , Đường dẫn tới check-point thực hiện Infer
     """
-    model_asr = Model_ASR()
-    processing_dataset(path_test_data, model_asr)
+    processing_dataset(path_test_data)
     # Load test dataset
     df = pd.read_csv(path_test_data)
     df = df[df['text'].notna()]
@@ -60,6 +58,6 @@ async def test(path_test_data:str = './datasets/test.csv', labId:str = "video_ma
     }
 
 # if __name__ == "__main__":
-#     for i in range(10):
+#     for i in range(2):
 #         idx = i+1
 #         print(test(model_name="FacebookAI/xlm-roberta-base", ckpt_number=idx))
