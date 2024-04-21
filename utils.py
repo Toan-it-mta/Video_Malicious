@@ -3,11 +3,11 @@ import numpy as np
 import re
 from sklearn.metrics import f1_score
 from datasets import Dataset
-import pandas
-# import moviepy.editor as mp
 import pandas as pd
 import os
 from model_asr import Model_ASR
+import torch 
+import gc
 
 accuracy = evaluate.load("accuracy")
 
@@ -52,7 +52,7 @@ def preprocessing_text(text):
     text = re.sub("\r", "\n", text)
     text = re.sub("\n{2,}", "\n", text)
     text = re.sub("…", ".", text)
-    text = re.sub("\.{2,}", ".", text)
+    text = re.sub(".{2,}", ".", text)
     text = text.strip()
     text = text.lower()
     return text
@@ -95,9 +95,15 @@ def get_text_from_file_mp3(path_file_mp4:str, model_asr: Model_ASR):
     # os.remove(path_file_mp3)
     return text
 
-def processing_dataset(path_dataset_csv:str, model_asr: Model_ASR):
+def processing_dataset(path_dataset_csv:str):
     df = pd.read_csv(path_dataset_csv)
-    df['text'] = df['path'].apply(lambda x: get_text_from_file_mp3(x, model_asr))
-    df.to_csv(path_dataset_csv, index=False)
+    if 'text' not in df:
+        model_asr = Model_ASR()
+        df['text'] = df['path'].apply(lambda x: get_text_from_file_mp3(x, model_asr))
+        df.to_csv(path_dataset_csv, index=False)
+        model_asr.model.to('cpu')
+        del model_asr
+        torch.cuda.empty_cache()
+        gc.collect()	
 
     

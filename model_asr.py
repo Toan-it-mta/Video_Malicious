@@ -21,7 +21,7 @@ class Model_ASR:
             tokenizer=self.processor.tokenizer,
             feature_extractor=self.processor.feature_extractor,
             chunk_length_s=20,
-            batch_size=16,
+            batch_size=1,
             return_timestamps=True,
             torch_dtype=self.torch_dtype,
             device=device,
