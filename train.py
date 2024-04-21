@@ -2,7 +2,7 @@ from model_text_classification import Model_Text_Classification
 from utils import processing_dataset, load_train_valid_dataset
 
 
-def train(labId:str = "video_malicious_detection", model_name:str = 'google-bert/bert-base-multilingual-uncased', path_train_data:str = "./datasets/train.csv", val_size:float = 0.1,
+async def train(labId:str = "video_malicious_detection", model_name:str = 'google-bert/bert-base-multilingual-uncased', path_train_data:str = "./datasets/train.csv", val_size:float = 0.1,
                 learning_rate:float = 2e-4, epochs:int = 3, batch_size:int = 16):
     """
     Parameters
@@ -23,7 +23,7 @@ def train(labId:str = "video_malicious_detection", model_name:str = 'google-bert
     for res_per_epoch in train_output:
 	    yield res_per_epoch
     
-if __name__ == '__main__':
-    respones = train(model_name="FacebookAI/xlm-roberta-base", epochs=10)
-    for res in respones:
-        print(res)
+# if __name__ == '__main__':
+#     respones = train(model_name="FacebookAI/xlm-roberta-base", epochs=10)
+#     for res in respones:
+#         print(res)
