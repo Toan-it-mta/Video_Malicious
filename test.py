@@ -3,6 +3,8 @@ import pandas as pd
 from datasets import Dataset
 from utils import compute_metrics, preprocessing_text, processing_dataset
 import os
+import numpy as np
+import json
 
 async def test(path_test_data:str = './datasets/test.csv', labId:str = "video_malicious_detection", ckpt_number:int = 1, model_name:str = "google-bert/bert-base-multilingual-uncased", sample_model_dir:str = ''):
     """
@@ -20,7 +22,6 @@ async def test(path_test_data:str = './datasets/test.csv', labId:str = "video_ma
     df = pd.read_csv(path_test_data)
     df = df[df['text'].notna()]
     df['text'] = df['text'].apply(preprocessing_text)
-    del df['path']
     test_dataset = Dataset.from_pandas(df)
 
     #Load Model
@@ -50,14 +51,18 @@ async def test(path_test_data:str = './datasets/test.csv', labId:str = "video_ma
         compute_metrics = compute_metrics, # type: ignore
     )
     result = trainer.evaluate()
+    predictions = trainer.predict(test_dataset)
+    predicted_labels = np.argmax(predictions.predictions, axis=1)
+    df['predicts'] = predicted_labels
     return {
         'test_acc': result['eval_accuracy'],
         'test_f1_score': result['eval_f1_score'],
         'test_loss': result["eval_loss"],
-        'model_checkpoint_number': ckpt_number or "Invalid"
+        'model_checkpoint_number': ckpt_number or "Invalid",
+        'test_result': json.loads(df.to_json(orient="records"))
     }
 
 # if __name__ == "__main__":
-#     for i in range(2):
+#     for i in range(1):
 #         idx = i+1
-#         print(test(model_name="FacebookAI/xlm-roberta-base", ckpt_number=idx))
+#         print(test(model_name="vinai/phobert-base", ckpt_number=idx))

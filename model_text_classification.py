@@ -57,6 +57,7 @@ class Model_Text_Classification:
         EPOCHS : int, require, default: 10 , Số epochs huấn luyện
         BS : int, require, default: 16 ,  Độ lớn của Batch Size
         """
+
         self.train_dataset = self.train_dataset.map(self.preprocess_function, batched=True)
         self.valid_dataset = self.valid_dataset.map(self.preprocess_function, batched=True)
         training_args = TrainingArguments(
@@ -83,7 +84,8 @@ class Model_Text_Classification:
         trainer.add_callback(CustomCallback(trainer))
         for _ in range(EPOCHS):
             trainer.train()
-            trainer.save_model(f"./modelDir/{self.labId}/log_train/{self.model_name}/ckpt-{_+1}")
+            model_path = f"./modelDir/{self.labId}/log_train/{self.model_name}/ckpt-{_+1}"
+            trainer.save_model(model_path)
             yield {
                 "epoch" : _ + 1,
                 "train_accuracy" : trainer.state.log_history[0]["train_accuracy"],
@@ -91,7 +93,8 @@ class Model_Text_Classification:
                 "train_loss": trainer.state.log_history[0]["train_loss"],
                 "eval_accuracy" : trainer.state.log_history[1]["eval_accuracy"],
                 "eval_loss": trainer.state.log_history[1]["eval_loss"],
-                "eval_f1_score": trainer.state.log_history[1]["eval_f1_score"]
+                "eval_f1_score": trainer.state.log_history[1]["eval_f1_score"],
+                "model_path": model_path
             }
             
 # if __name__ == "__main__":

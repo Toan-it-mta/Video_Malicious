@@ -11,6 +11,8 @@ Code đã được viết theo định dạng của: [URL_Phising](https://githu
 
 * Thực hiện câu lệnh:
 
+    `$ sudo apt install ffmpeg` 
+
     `$ pip install -r requirements.txt` 
 
 * Clone mô hình ASR:

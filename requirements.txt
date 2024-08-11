@@ -7,3 +7,4 @@ scikit-learn
 librosa
 numpy
 evaluate
+ffmpeg
